@@ -12,4 +12,10 @@ class User extends Model
     public function School() {
         return $this->belongsTo(School::class, 'school_id');
     }
+
+    //mutator function
+    public function setBcryptPasswordAttribute($password)
+    {
+        $this->attributes['password'] = bcrypt($password);
+    }
 }

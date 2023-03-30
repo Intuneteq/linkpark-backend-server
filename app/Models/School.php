@@ -9,6 +9,10 @@ class School extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'name', 'address', 'city', 'state', 'country', 'email'
+    ];
+
     public function users()
     {
         return $this->hasMany(User::class, 'school_id');

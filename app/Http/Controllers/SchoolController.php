@@ -6,13 +6,16 @@ use App\Models\School;
 use App\Http\Requests\StoreSchoolRequest;
 use App\Http\Requests\UpdateSchoolRequest;
 use App\Http\Resources\SchoolResource;
+use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class SchoolController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $schools = School::query()->paginate(10);
+        //Get page size from query param for pagination
+        $page_size = $request->page_size ?? 10;
+        $schools = School::query()->paginate($page_size);
         return SchoolResource::collection($schools);
     }
 

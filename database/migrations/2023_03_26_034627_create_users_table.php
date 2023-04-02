@@ -6,27 +6,24 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
+
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('school_id')->constrained('schools')->cascadeOnDelete();
+            $table->foreignId('school_id');
+            $table->foreign('school_id')->on('schools')->references('id')->cascadeOnDelete();
             $table->string('first_name');
             $table->string('last_name');
             $table->string('email')->unique()->index();
             $table->string('password');
             $table->string('phone_number')->nullable();
             $table->enum('user_type', ['parent', 'student'])->default('parent');
+            $table->rememberToken();
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('users');

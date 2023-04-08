@@ -12,7 +12,7 @@ return new class extends Migration
         Schema::create('guardians', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('guardian_code')->unique();
-            $table->foreignId('user_id');
+            $table->foreignId('user_id')->unique();
             $table->foreign('user_id')->on('users')->references('id')->cascadeOnDelete();
             $table->timestamps();
         });

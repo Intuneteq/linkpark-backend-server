@@ -14,7 +14,7 @@ class GuardianSeeder extends Seeder
     {
         $this->disableForeignKeys();
         $this->truncate('guardians');
-        Guardian::factory(10)->create();
+        Guardian::factory(3)->create();
         $this->enableForeignKeys();
     }
 }

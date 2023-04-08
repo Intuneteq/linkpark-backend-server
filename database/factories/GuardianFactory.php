@@ -21,14 +21,15 @@ class GuardianFactory extends Factory
 
     public function definition(): array
     {
-        $user = User::where('user_type', 'parent')
-            ->whereDoesntHave('guardian')
-            ->inRandomOrder()
-            ->first();
-
         return [
-            'user_id' => $user->id,
-            'guardian_code' => mt_rand(100000, 999999)
+            'user_id' => User::where('user_type', 'parent')
+                ->whereDoesntHave('guardian', function ($query) {
+                    $query->where('guardian_code', $this->faker->unique()->numberBetween(100000, 999999));
+                })
+                ->inRandomOrder()
+                ->firstOrFail()
+                ->id,
+            'guardian_code' => $this->faker->unique()->numberBetween(100000, 999999)
         ];
     }
 }

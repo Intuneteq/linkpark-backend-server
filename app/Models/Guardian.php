@@ -19,11 +19,8 @@ class Guardian extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public static function rules()
+    public function students() 
     {
-        return [
-            'user_id' => 'required|unique:guardians',
-            'guardian_code' => 'required',
-        ];
+        return $this->hasMany(Students::class, 'guardian_code', 'guardian_code');
     }
 }

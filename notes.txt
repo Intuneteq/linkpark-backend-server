@@ -1,0 +1,3 @@
+workflow
+1. create model table
+2. update migration file

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id');
             $table->foreign('user_id')->on('users')->references('id')->cascadeOnDelete();
-            $table->unsignedBigInteger('guardian_code');
+            $table->foreignId('guardian_code');
             $table->foreign('guardian_code')->on('guardians')->references('guardian_code')->cascadeOnDelete();
             $table->timestamps();
         });

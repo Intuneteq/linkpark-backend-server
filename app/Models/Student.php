@@ -9,12 +9,12 @@ class Student extends Model
 {
     use HasFactory;
 
-    public function User()
+    public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function Guardian()
+    public function guardian()
     {
         return $this->belongsTo(Guardian::class, 'guardian_code');
     }

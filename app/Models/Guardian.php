@@ -14,7 +14,7 @@ class Guardian extends Model
         'guardian_code',
     ];
 
-    public function User()
+    public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
     }

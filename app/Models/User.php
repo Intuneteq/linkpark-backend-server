@@ -19,6 +19,11 @@ class User extends Model
         return $this->hasOne(Guardian::class);
     }
 
+    public function student()
+    {
+        return $this->hasOne(Student::class);
+    }
+
     //mutator function
     public function setBcryptPasswordAttribute($password)
     {

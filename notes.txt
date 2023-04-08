@@ -1,3 +1,5 @@
 workflow
 1. create model table
 2. update migration file
+3. call migration (php artisan migrate)
+4. update model factory

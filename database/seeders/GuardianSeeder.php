@@ -2,16 +2,19 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Guardian;
+use Database\Seeders\Traits\DisableForeignKeys;
+use Database\Seeders\Traits\TruncateTable;
 use Illuminate\Database\Seeder;
 
 class GuardianSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
+    use TruncateTable, DisableForeignKeys;
     public function run(): void
     {
-        //
+        $this->disableForeignKeys();
+        $this->truncate('guardians');
+        Guardian::factory(10)->create();
+        $this->enableForeignKeys();
     }
 }

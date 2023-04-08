@@ -7,5 +7,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class Guardian extends Model
 {
-    use HasFactory;
+    use HasFactory; //without this, we cannot use factories to seed
 }

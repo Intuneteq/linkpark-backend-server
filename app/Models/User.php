@@ -9,8 +9,14 @@ class User extends Model
 {
     use HasFactory;
 
-    public function School() {
+    public function School()
+    {
         return $this->belongsTo(School::class, 'school_id');
+    }
+
+    public function guardian()
+    {
+        return $this->hasOne(Guardian::class);
     }
 
     //mutator function

@@ -42,6 +42,10 @@ class StoreUserRequest extends FormRequest
      */
     protected function failedValidation($validator)
     {
+        // var_dump('here 2');
+        // If email is not unique throw 409
+
+        // else throw 422
         throw new CreateApiException($validator->errors()->first(), 422);
     }
 }

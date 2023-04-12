@@ -23,7 +23,7 @@ class GuardianFactory extends Factory
 
     public function definition(): array
     {
-        $user = User::doesntHave('guardian')->where('user_type', 'parent')->inRandomOrder()->first();
+        $user = User::doesntHave('guardian')->where('user_type', 'guardian')->inRandomOrder()->first();
         return [
             'user_id' => $user->id,
             'guardian_code' => mt_rand(100000, 999999)

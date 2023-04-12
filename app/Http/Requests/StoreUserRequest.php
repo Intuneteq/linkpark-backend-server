@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Exceptions\CreateApiException;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreUserRequest extends FormRequest
 {
@@ -11,7 +13,7 @@ class StoreUserRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,8 +23,25 @@ class StoreUserRequest extends FormRequest
      */
     public function rules(): array
     {
+
         return [
-            //
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required',
+            'school_id' => 'required',
+            'user_type' => ['required', Rule::in(['guardian', 'student'])],
+            'first_name' => 'required',
+            'last_name' => 'required'
         ];
+    }
+
+    /**
+     * Handle a failed validation attempt.
+     *
+     * @param  \Illuminate\Contracts\Validation\Validator  $validator
+     * @throws \App\Exceptions\CreateApiException
+     */
+    protected function failedValidation($validator)
+    {
+        throw new CreateApiException($validator->errors()->first(), 422);
     }
 }

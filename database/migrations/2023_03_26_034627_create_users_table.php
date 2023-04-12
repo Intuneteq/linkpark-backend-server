@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('email')->unique()->index();
             $table->string('password');
             $table->string('phone_number')->nullable();
-            $table->enum('user_type', ['parent', 'student'])->default('parent');
+            $table->enum('user_type', ['guardian', 'student'])->default('guardian');
             $table->rememberToken();
             $table->timestamps();
         });

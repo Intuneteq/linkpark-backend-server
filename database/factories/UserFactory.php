@@ -28,7 +28,7 @@ class UserFactory extends Factory
             'email' => fake()->unique()->safeEmail(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
             'phone_number' => fake()->phoneNumber(),
-            'user_type' => fake()->randomElement(['parent', 'student']),
+            'user_type' => fake()->randomElement(['guardian', 'student']),
         ];
     }
 

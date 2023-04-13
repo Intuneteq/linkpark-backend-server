@@ -16,13 +16,14 @@ Route::group([
     'namespace' => "\App\Http\Controllers"
 ], function () {
     Route::post('/auth/register', [AuthController::class, 'register'])->name('register');
-    // Route::get('/auth', [AuthController::class, 'index'])->name('index')->withoutMiddleware('auth');
 
-    Route::get('/auth/{id}', [AuthController::class, 'show'])->name('show')->withoutMiddleware('auth')->where('id', '[0-9]+');
+    Route::post('/auth/login', [AuthController::class, 'login'])->name('login');
 
-    Route::post('/auth', [AuthController::class, 'store'])->name('store');
+    // Route::get('/auth/{id}', [AuthController::class, 'show'])->name('show')->withoutMiddleware('auth')->where('id', '[0-9]+');
 
-    Route::patch('/auth/{id}', [AuthController::class, 'update'])->name('update');
+    // Route::post('/auth', [AuthController::class, 'store'])->name('store');
 
-    Route::delete('/auth/{id}', [AuthController::class, 'destroy'])->name('delete');
+    // Route::patch('/auth/{id}', [AuthController::class, 'update'])->name('update');
+
+    // Route::delete('/auth/{id}', [AuthController::class, 'destroy'])->name('delete');
 });

@@ -43,8 +43,7 @@ class AuthController extends Controller
                     'guardian_code' => $guardianCode,
                     'user_id' => $user->id,
                 ]);
-                $user->guardian()->associate($guardian);
-                $user->save();
+                $user->student()->save($guardian);
             }
 
             // Whwn user is a student
@@ -73,39 +72,7 @@ class AuthController extends Controller
         ]);
     }
 
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function login()
     {
         //
     }

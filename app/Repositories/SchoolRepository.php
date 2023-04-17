@@ -5,7 +5,7 @@ namespace App\Repositories;
 use App\Exceptions\CreateApiException;
 use App\Models\School;
 
-class SchoolRepository
+class SchoolRepository extends BaseRepository
 {
     public function create(array $attributes)
     {
@@ -20,7 +20,7 @@ class SchoolRepository
         return $school;
     }
 
-    public function update(School $school, array $attributes)
+    public function update($school, array $attributes)
     {
         $updated = $school->update([
             'name' => data_get($attributes, 'name', $school->title),
@@ -37,7 +37,7 @@ class SchoolRepository
         return $school;
     }
 
-    public function forceDelete(School $school)
+    public function forceDelete($school)
     {
         $deleted = $school->forceDelete();
 

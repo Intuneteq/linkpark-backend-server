@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\SendGuardianCode;
 use App\Exceptions\CreateApiException;
 use App\Http\Requests\StoreUserRequest;
 use App\Models\Guardian;
@@ -56,6 +57,8 @@ class AuthController extends Controller
                 ]);
                 $user->student()->save($student);
             }
+            // Create event and email guardian code
+            event(new SendGuardianCode($user));
             return $guardianCode;
         });
 

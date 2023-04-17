@@ -6,6 +6,7 @@ use App\Models\School;
 use App\Http\Requests\StoreSchoolRequest;
 use App\Http\Requests\UpdateSchoolRequest;
 use App\Http\Resources\SchoolResource;
+use App\Repositories\SchoolRepository;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -19,16 +20,12 @@ class SchoolController extends Controller
         return SchoolResource::collection($schools);
     }
 
-    public function store(StoreSchoolRequest $request)
+    public function store(StoreSchoolRequest $request, SchoolRepository $repository)
     {
-        $school = School::query()->create([
-            'name' => $request->name,
-            'address' => $request->address,
-            'city' => $request->city,
-            'state' => $request->state,
-            'country' => $request->country,
-            'email' => $request->email
-        ]);
+        $school = $repository->create($request->only([
+            'name', 'address', 'city', 'state', 'country', 'email'
+        ]));
+
         return new SchoolResource($school);
     }
 
@@ -37,37 +34,21 @@ class SchoolController extends Controller
         return new SchoolResource($school);
     }
 
-    public function update(UpdateSchoolRequest $request, School $school)
+    public function update(UpdateSchoolRequest $request, School $school, SchoolRepository $repository)
     {
-        $updated = $school->update([
-            'name' => $request->name ?? $school->name,
-            'address' => $request->address ?? $school->address,
-            'city' => $request->city ?? $school->city,
-            'state' => $request->state ?? $school->state,
-            'country' => $request->country ?? $school->country,
-            'email' => $request->email ?? $school->email
-        ]);
-
-        if (!$updated) {
-            return new JsonResponse([
-                'error' => ['Failed to update']
-            ], 400);
-        }
+        $school = $repository->update($school, $request->only([
+            'name', 'address', 'city', 'state', 'country', 'email'
+        ]));
         return new SchoolResource($school);
     }
 
-    public function destroy(School $school)
+    public function destroy(School $school, SchoolRepository $repository)
     {
-        $deleted = $school->forceDelete();
-
-        if (!$deleted) {
-            return new JsonResponse([
-                'error' => ['could not delete resource']
-            ], 400);
-        }
+        $deleted = $repository->forceDelete($school);
 
         return new JsonResponse([
-            'data' => 'deleted'
+            'success' => true,
+            'message' => 'success'
         ]);
     }
 }

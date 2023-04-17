@@ -3,3 +3,15 @@ workflow
 2. update migration file
 3. call migration (php artisan migrate)
 4. update model factory
+
+RESOURCE CLASS
+1. php artisan make:resource <Resource-name>
+2. return details in toArray function
+
+PAGINATE (2:30:00)
+1. change query to paginate and pass in pageSize ($schools = School::query()->paginate($page_size))
+
+REPOSITORY PATTERN (2:31:00)
+1. create a class
+2. add necessary methods to class
+

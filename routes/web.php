@@ -1,9 +1,6 @@
 <?php
 
-use App\Mail\GuardianCodeMail;
-use App\Models\User;
 use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,8 +21,6 @@ Route::get('/', function () {
 // It will only run in local env
 if (App::environment('local')) {
     Route::get('/playground', function () {
-        $user = User::factory()->make();
-        Mail::to($user)->send(new GuardianCodeMail($user, 123456));
-        return null;
+        //
     });
 }

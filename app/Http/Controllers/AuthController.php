@@ -15,16 +15,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 class AuthController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-
-    public function index()
-    {
-        // var_dump('i got here');
-        // event(new GuardianCode(User::factory()->make()));
-        // var_dump('i got here 2');
-    }
     public function register(StoreUserRequest $request)
     {
         $guardianCode = DB::transaction(function () use ($request) {
@@ -49,7 +39,7 @@ class AuthController extends Controller
 
             // When user is a guardian
             if ($user_type === 'guardian') {
-                
+
                 // Generate a unique guardian code
                 $guardianCode = mt_rand(100000, 999999);
                 while (Guardian::where('guardian_code', $guardianCode)->exists()) {

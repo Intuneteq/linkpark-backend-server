@@ -23,3 +23,5 @@ EMAILING using event and event listeners (2:47:00)
 2. add model as protected
 3. Pass in model into __construct method and assign to protected model
 2. create event listener php artisan make:listener <<listenername>>
+5. create subscribers to group listeners by model
+6. setup mail view

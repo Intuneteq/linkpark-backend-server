@@ -21,9 +21,9 @@ class AuthController extends Controller
 
     public function index()
     {
-        var_dump('i got here');
-        event(new GuardianCode(User::factory()->make()));
-        var_dump('i got here 2');
+        // var_dump('i got here');
+        // event(new GuardianCode(User::factory()->make()));
+        // var_dump('i got here 2');
     }
     public function register(StoreUserRequest $request)
     {
@@ -49,6 +49,7 @@ class AuthController extends Controller
 
             // When user is a guardian
             if ($user_type === 'guardian') {
+                
                 // Generate a unique guardian code
                 $guardianCode = mt_rand(100000, 999999);
                 while (Guardian::where('guardian_code', $guardianCode)->exists()) {
@@ -61,6 +62,9 @@ class AuthController extends Controller
                     'user_id' => $user->id,
                 ]);
                 $user->student()->save($guardian);
+
+                // Create event and email guardian code
+                event(new GuardianCode($user, $guardianCode));
             }
 
             // Whwn user is a student
@@ -73,8 +77,6 @@ class AuthController extends Controller
                 ]);
                 $user->student()->save($student);
             }
-            // Create event and email guardian code
-            event(new GuardianCode($user));
             return $guardianCode;
         });
 

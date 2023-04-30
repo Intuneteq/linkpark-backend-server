@@ -3,6 +3,7 @@
 namespace App\Events\Models\User;
 
 use App\Models\User;
+use Faker\Core\Number;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -15,12 +16,16 @@ class GuardianCode
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
+    public $user;
+    public $guardian_code;
+
     /**
      * Create a new event instance.
      */
-    public function __construct(User $user)
+    public function __construct(User $user, $guardianCode)
     {
-        $this->$user = $user;
+        $this->user = $user;
+        $this->guardian_code = $guardianCode;
     }
 
     /**

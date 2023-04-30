@@ -5,7 +5,7 @@ namespace App\Listeners;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
-class SendGuardianCodeListener
+class SendGuardianCodeEmail
 {
     /**
      * Create the event listener.
@@ -20,6 +20,6 @@ class SendGuardianCodeListener
      */
     public function handle(object $event): void
     {
-        //
+        var_dump('email sent');
     }
 }

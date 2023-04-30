@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Events;
+namespace App\Events\Models\User;
 
 use App\Models\User;
 use Illuminate\Broadcasting\Channel;
@@ -11,17 +11,16 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class SendGuardianCode
+class GuardianCode
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    protected $user;
     /**
      * Create a new event instance.
      */
     public function __construct(User $user)
     {
-        $this->user = $user;
+        $this->$user = $user;
     }
 
     /**

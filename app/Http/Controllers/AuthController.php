@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\SendGuardianCode;
+use App\Events\Models\User\GuardianCode;
 use App\Exceptions\CreateApiException;
 use App\Http\Requests\StoreUserRequest;
 use App\Models\Guardian;
+use App\Models\School;
 use App\Models\Student;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -17,10 +18,25 @@ class AuthController extends Controller
     /**
      * Display a listing of the resource.
      */
+
+    public function index()
+    {
+        var_dump('i got here');
+        event(new GuardianCode(User::factory()->make()));
+        var_dump('i got here 2');
+    }
     public function register(StoreUserRequest $request)
     {
         $guardianCode = DB::transaction(function () use ($request) {
             $user_type = $request->user_type;
+
+            // Check if school id exist
+            $school_id_exist = School::query()->find($request->school_id);
+
+            if (!$school_id_exist) {
+                throw new CreateApiException('School does not exist', 400);
+            }
+
             // Create a new User instance and set the attributes
             $user = new User();
             $user->first_name = $request->first_name;
@@ -58,7 +74,7 @@ class AuthController extends Controller
                 $user->student()->save($student);
             }
             // Create event and email guardian code
-            event(new SendGuardianCode($user));
+            event(new GuardianCode($user));
             return $guardianCode;
         });
 
@@ -75,7 +91,7 @@ class AuthController extends Controller
         ]);
     }
 
-    public function login()
+    public function login(Request $request)
     {
         //
     }

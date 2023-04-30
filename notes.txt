@@ -15,3 +15,11 @@ REPOSITORY PATTERN (2:31:00)
 1. create a class
 2. add necessary methods to class
 
+EXCEPTION HANDLERS (2:38:00)
+1. php artisan make:exception <exception name>
+
+EMAILING using event and event listeners (2:47:00)
+1. php artisan make:event <EventName>
+2. add model as protected
+3. Pass in model into __construct method and assign to protected model
+2. create event listener php artisan make:listener <<listenername>>

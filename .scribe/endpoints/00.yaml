@@ -1,0 +1,117 @@
+name: 'Authorization and Authentication'
+description: |-
+
+  Endpoints to Authorize and Authenticate a user
+endpoints:
+  -
+    httpMethods:
+      - POST
+    uri: api/v1/auth/register
+    metadata:
+      groupName: 'Authorization and Authentication'
+      groupDescription: |-
+
+        Endpoints to Authorize and Authenticate a user
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      email:
+        name: email
+        description: 'Must be a valid email address.'
+        required: true
+        example: katelynn.schmitt@example.org
+        type: string
+        custom: []
+      password:
+        name: password
+        description: ''
+        required: true
+        example: doloremque
+        type: string
+        custom: []
+      school_id:
+        name: school_id
+        description: ''
+        required: true
+        example: 3
+        type: integer
+        custom: []
+      user_type:
+        name: user_type
+        description: 'Must be one of <code>guardian</code> or <code>student</code>.'
+        required: true
+        example: student
+        type: string
+        custom: []
+      first_name:
+        name: first_name
+        description: ''
+        required: true
+        example: sint
+        type: string
+        custom: []
+      last_name:
+        name: last_name
+        description: ''
+        required: true
+        example: minus
+        type: string
+        custom: []
+    cleanBodyParameters:
+      email: katelynn.schmitt@example.org
+      password: doloremque
+      school_id: 3
+      user_type: student
+      first_name: sint
+      last_name: minus
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
+    uri: api/v1/auth/login
+    metadata:
+      groupName: 'Authorization and Authentication'
+      groupDescription: |-
+
+        Endpoints to Authorize and Authenticate a user
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []

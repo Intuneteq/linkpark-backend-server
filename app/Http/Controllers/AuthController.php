@@ -4,15 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Events\Models\User\GuardianCode;
 use App\Exceptions\CreateApiException;
+use App\Http\Requests\LoginRequest;
 use App\Http\Requests\StoreUserRequest;
 use App\Models\Guardian;
 use App\Models\School;
 use App\Models\Student;
 use App\Models\User;
-use Illuminate\Http\Request;
+use Hash;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
+/**
+ * @group Authorization and Authentication
+ * 
+ * Endpoints to Authorize and Authenticate a user
+ **/
 class AuthController extends Controller
 {
     public function register(StoreUserRequest $request)
@@ -85,11 +91,27 @@ class AuthController extends Controller
         ]);
     }
 
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
-        $email = $request->email;
-        $password = $request->password;
+        $user = User::where('email', $request->email)->first();
+        if (!$user) throw new CreateApiException("User does not exist", 404);
 
-        if (!$email || !$password) throw new CreateApiException('Incomplete Payload', 422);
+        // Validate user
+        $validateUser = Hash::check($request->password, $user->password);
+        if (!$validateUser) throw new CreateApiException("Unauthorized", 401);
+
+        // Create Token
+        $token = $user->createToken('user', [$user->user_type]);
+
+
+        // Return a success response
+        return new JsonResponse([
+            'success' => true,
+            'data' => [
+                "full_name" => $user->first_name . " " . $user->last_name,
+                "accessToken" => $token->plainTextToken
+            ],
+            'message' => 'success',
+        ]);
     }
 }

@@ -28,7 +28,7 @@ class GuardianCodeMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            from: new Address('tobiolanitori@example.com', 'Tobi Olanitori'),
+            from: new Address('tobiolanitori@example.com', 'Link-Park'),
             subject: 'Guardian Code Mail',
         );
     }

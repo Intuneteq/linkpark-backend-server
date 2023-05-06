@@ -53,8 +53,12 @@ class AuthController extends Controller
                 ]);
                 $user->student()->save($guardian);
 
-                // Create event and email guardian code
-                event(new GuardianCode($user, $guardianCode));
+                try {
+                    // Create event and email guardian code
+                    event(new GuardianCode($user, $guardianCode));
+                } catch (\Throwable $th) {
+                    throw new CreateApiException('Could not send guardian email', 500);
+                }
             }
 
             // Whwn user is a student
@@ -70,8 +74,6 @@ class AuthController extends Controller
             return $guardianCode;
         });
 
-
-
         // Return a success response
         return new JsonResponse([
             'success' => true,
@@ -85,6 +87,9 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        //
+        $email = $request->email;
+        $password = $request->password;
+
+        if (!$email || !$password) throw new CreateApiException('Incomplete Payload', 422);
     }
 }

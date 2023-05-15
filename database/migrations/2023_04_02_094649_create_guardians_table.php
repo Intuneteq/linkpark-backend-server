@@ -14,6 +14,8 @@ return new class extends Migration
             $table->unsignedBigInteger('guardian_code')->unique();
             $table->foreignId('user_id')->unique();
             $table->foreign('user_id')->on('users')->references('id')->cascadeOnDelete();
+            $table->foreignId('school_id');
+            $table->foreign('school_id')->on('schools')->references('id')->cascadeOnDelete();
             $table->timestamps();
         });
     }

@@ -12,13 +12,8 @@ class User extends Model
     use HasApiTokens, HasFactory;
 
     protected $fillable = [
-        'first_name', 'last_name', 'email', 'password', 'school_id', 'phone_number'
+        'first_name', 'last_name', 'email', 'password', 'phone_number'
     ];
-
-    public function School()
-    {
-        return $this->belongsTo(School::class, 'school_id');
-    }
 
     public function guardian()
     {

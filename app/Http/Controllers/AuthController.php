@@ -38,7 +38,6 @@ class AuthController extends Controller
             $user->first_name = $request->first_name;
             $user->last_name = $request->last_name;
             $user->email = $request->email;
-            $user->school_id = $request->school_id;
             $user->user_type = $request->user_type;
             $user->setBcryptPasswordAttribute($request->password); // hash the password
             $user->save();
@@ -56,9 +55,10 @@ class AuthController extends Controller
                 $guardian = new Guardian([
                     'guardian_code' => $guardianCode,
                     'user_id' => $user->id,
+                    'school_id' => $request->school_id
                 ]);
                 $user->student()->save($guardian);
-
+                
                 try {
                     // Create event and email guardian code
                     event(new GuardianCode($user, $guardianCode));

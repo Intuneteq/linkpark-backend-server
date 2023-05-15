@@ -27,7 +27,6 @@ class StoreUserRequest extends FormRequest
         return [
             'email' => 'required|email|unique:users,email',
             'password' => 'required',
-            'school_id' => 'required|integer',
             'user_type' => ['required', Rule::in(['guardian', 'student'])],
             'first_name' => ['required'],
             'last_name' => ['required']
@@ -42,8 +41,7 @@ class StoreUserRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'school_id.required' => 'school Id is a required field',
-            'school_id.integer' => 'school Id must be an Integer',
+            // 'school_id.integer' => 'school Id must be an Integer',
         ];
     }
 

@@ -11,12 +11,18 @@ class Guardian extends Model
 
     protected $fillable = [
         'user_id',
+        'school_id',
         'guardian_code',
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function School()
+    {
+        return $this->belongsTo(School::class, 'school_id');
     }
 
     public function students() 

@@ -26,13 +26,6 @@ class AuthController extends Controller
         $guardianCode = DB::transaction(function () use ($request) {
             $user_type = $request->user_type;
 
-            // Check if school id exist
-            $school_id_exist = School::query()->find($request->school_id);
-
-            if (!$school_id_exist) {
-                throw new CreateApiException('School does not exist', 400);
-            }
-
             // Create a new User instance and set the attributes
             $user = new User();
             $user->first_name = $request->first_name;
@@ -44,6 +37,13 @@ class AuthController extends Controller
 
             // When user is a guardian
             if ($user_type === 'guardian') {
+
+                // Check if school id exist
+                $school_id_exist = School::query()->find($request->school_id);
+
+                if (!$school_id_exist) {
+                    throw new CreateApiException('School does not exist', 400);
+                }
 
                 // Generate a unique guardian code
                 $guardianCode = mt_rand(100000, 999999);
@@ -58,7 +58,7 @@ class AuthController extends Controller
                     'school_id' => $request->school_id
                 ]);
                 $user->student()->save($guardian);
-                
+
                 try {
                     // Create event and email guardian code
                     event(new GuardianCode($user, $guardianCode));
@@ -88,7 +88,7 @@ class AuthController extends Controller
                 'guardian_code' => $guardianCode
             ],
             'message' => 'success',
-        ]);
+        ], 201);
     }
 
     public function login(LoginRequest $request)
@@ -112,6 +112,6 @@ class AuthController extends Controller
                 "accessToken" => $token->plainTextToken
             ],
             'message' => 'success',
-        ]);
+        ], 200);
     }
 }

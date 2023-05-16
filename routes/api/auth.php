@@ -20,12 +20,4 @@ Route::group([
     Route::post('/auth/login', [AuthController::class, 'login'])->name('login');
 
     Route::get('/auth', [AuthController::class, 'index'])->name('index');
-
-    // Route::get('/auth/{id}', [AuthController::class, 'show'])->name('show')->withoutMiddleware('auth')->where('id', '[0-9]+');
-
-    // Route::post('/auth', [AuthController::class, 'store'])->name('store');
-
-    // Route::patch('/auth/{id}', [AuthController::class, 'update'])->name('update');
-
-    // Route::delete('/auth/{id}', [AuthController::class, 'destroy'])->name('delete');
 });

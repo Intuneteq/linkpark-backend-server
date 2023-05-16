@@ -11,6 +11,7 @@ use App\Models\School;
 use App\Models\Student;
 use App\Models\User;
 use Hash;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -93,25 +94,22 @@ class AuthController extends Controller
 
     public function login(LoginRequest $request)
     {
-        $user = User::where('email', $request->email)->first();
-        if (!$user) throw new CreateApiException("User does not exist", 404);
 
-        // Validate user
-        $validateUser = Hash::check($request->password, $user->password);
-        if (!$validateUser) throw new CreateApiException("Unauthorized", 401);
+        $aunthenticated = Auth::attempt($request->only('email', 'password'));
+        if (!$aunthenticated) throw new CreateApiException("Unauthorized", 401);
 
-        // Create Token
-        $token = $user->createToken('user', [$user->user_type]);
+        $user = Auth::user();
+        $token = $user->createToken('token')->plainTextToken;
+        $cookie = cookie('jwt', $token, 60 * 24);
 
-
-        // Return a success response
-        return new JsonResponse([
+        return response([
             'success' => true,
             'data' => [
+                'id' => $user->id,
                 "full_name" => $user->first_name . " " . $user->last_name,
-                "accessToken" => $token->plainTextToken
+                "cookie" => $token
             ],
             'message' => 'success',
-        ], 200);
+        ])->withCookie($cookie);
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
+use App\Http\Resources\UserResource;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class UserController extends Controller
@@ -32,11 +33,12 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(User $user)
+    public function show(User $userId)
     {
-        return new JsonResponse([
-            "data" => $user
-        ]);
+        return new UserResource($userId);
+        // return new JsonResponse([
+        //     "data" => $userId
+        // ]);
     }
 
     /**
@@ -52,7 +54,7 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(User $user)
+    public function destroy(User $userId)
     {
         return new JsonResponse([
             'data' => 'deleted'

@@ -6,6 +6,7 @@ use App\Events\Models\User\GuardianCode;
 use App\Exceptions\CreateApiException;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdateUserRequest;
 use App\Models\Guardian;
 use App\Models\School;
 use App\Models\Student;
@@ -13,6 +14,7 @@ use App\Models\User;
 use Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
@@ -95,11 +97,11 @@ class AuthController extends Controller
     public function login(LoginRequest $request)
     {
 
-        $aunthenticated = Auth::attempt($request->only('email', 'password'));
-        if (!$aunthenticated) throw new CreateApiException("Unauthorized", 401);
+        $token = Auth::attempt($request->only('email', 'password'));
+        if (!$token) throw new CreateApiException("Unauthorized", 401);
+
 
         $user = Auth::user();
-        $token = $user->createToken('token')->plainTextToken;
         $cookie = cookie('jwt', $token, 60 * 24);
 
         return response([
@@ -111,5 +113,69 @@ class AuthController extends Controller
             ],
             'message' => 'success',
         ])->withCookie($cookie);
+    }
+
+    public function logout()
+    {
+        Auth::logout();
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Successfully logged out',
+        ]);
+    }
+
+    public function refresh()
+    {
+        $user = Auth::user();
+        $token = Auth::refresh();
+        $cookie = cookie('jwt', $token, 60 * 24);
+
+        return response([
+            'success' => true,
+            'data' => [
+                'id' => $user->id,
+                "full_name" => $user->first_name . " " . $user->last_name,
+                "cookie" => $token
+            ],
+            'message' => 'success',
+        ])->withCookie($cookie);
+    }
+
+    public function changePassword(Request $request)
+    {
+        $user = Auth::user();
+
+        try {
+            // Validate the request data
+            $request->validate([
+                'old_password' => 'required',
+                'new_password' => 'required',
+            ]);
+        } catch (\Throwable $th) {
+            throw new CreateApiException($th->getMessage(), 422);
+        }
+
+        // Verify the old password
+        if (!Hash::check($request->old_password, $user->password)) {
+            return response()->json([
+                'message' => 'Incorrect old password',
+            ], 422);
+        }
+
+        // Update the password
+        $user->password = Hash::make($request->new_password);
+        $user->save();
+
+        return new JsonResponse([
+            'success' => true,
+            'data' => [],
+            'message' => 'Password updated successfully',
+        ], 200);
+    }
+
+    public function forgotPassword()
+    {
+        $user = Auth::user();
+        return $user;
     }
 }

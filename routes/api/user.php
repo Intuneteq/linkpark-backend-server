@@ -11,7 +11,7 @@ withoutMiddleware: excludes a middleware from a route
 */
 
 Route::group([
-    'middleware' => ['auth:sanctum'],
+    'middleware' => ['auth:api'],
     'as' => 'user.',
     'namespace' => "\App\Http\Controllers"
 ], function () {

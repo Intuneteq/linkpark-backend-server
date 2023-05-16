@@ -19,5 +19,11 @@ Route::group([
 
     Route::post('/auth/login', [AuthController::class, 'login'])->name('login');
 
-    Route::get('/auth', [AuthController::class, 'index'])->name('index');
+    Route::delete('/auth/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth:api');
+
+    Route::get('/auth/refresh', [AuthController::class, 'refresh'])->name('refresh')->middleware('auth:api');
+
+    Route::patch('/auth/change-password', [AuthController::class, 'changePassword'])->name('changePassword');
+
+    Route::post('/auth/forgot-password', [AuthController::class, 'forgotPassword'])->name('forgotPassword')->middleware('auth:api');
 });

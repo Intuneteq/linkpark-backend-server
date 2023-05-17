@@ -6,7 +6,6 @@ use App\Events\Models\User\GuardianCode;
 use App\Exceptions\CreateApiException;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\StoreUserRequest;
-use App\Http\Requests\UpdateUserRequest;
 use App\Models\Guardian;
 use App\Models\School;
 use App\Models\Student;
@@ -100,8 +99,11 @@ class AuthController extends Controller
         $token = Auth::attempt($request->only('email', 'password'));
         if (!$token) throw new CreateApiException("Unauthorized", 401);
 
+        // Create cookie token with sanctum(This will be used as the refresh token)
 
         $user = Auth::user();
+
+        // Add token to cookie which will be sent with the request
         $cookie = cookie('jwt', $token, 60 * 24);
 
         return response([
@@ -109,7 +111,7 @@ class AuthController extends Controller
             'data' => [
                 'id' => $user->id,
                 "full_name" => $user->first_name . " " . $user->last_name,
-                "cookie" => $token
+                "accessToken" => $token
             ],
             'message' => 'success',
         ])->withCookie($cookie);
@@ -126,16 +128,22 @@ class AuthController extends Controller
 
     public function refresh()
     {
+        // Verify sanctum token
+
+        // create new access token
         $user = Auth::user();
         $token = Auth::refresh();
         $cookie = cookie('jwt', $token, 60 * 24);
 
+        // Regenerate refresh token (sanctum)
+
+        // Respond with jwt access token and sanctum token as cookie
         return response([
             'success' => true,
             'data' => [
                 'id' => $user->id,
                 "full_name" => $user->first_name . " " . $user->last_name,
-                "cookie" => $token
+                "accessToken" => $token
             ],
             'message' => 'success',
         ])->withCookie($cookie);

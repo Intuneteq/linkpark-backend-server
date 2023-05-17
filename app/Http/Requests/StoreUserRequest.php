@@ -29,7 +29,8 @@ class StoreUserRequest extends FormRequest
             'password' => 'required',
             'user_type' => ['required', Rule::in(['guardian', 'student'])],
             'first_name' => ['required'],
-            'last_name' => ['required']
+            'last_name' => ['required'],
+            'guardian_code' => 'max:6|min:6'
         ];
     }
 

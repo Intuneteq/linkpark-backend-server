@@ -77,7 +77,11 @@ class AuthController extends Controller
                     'guardian_code' => $guardianCode,
                     'user_id' => $user->id,
                 ]);
-                $user->student()->save($student);
+                try {
+                    $user->student()->save($student);
+                } catch (\Throwable $th) {
+                    throw new CreateApiException('Incorrect Guardian code', 400);
+                }
             }
             return $guardianCode;
         });
@@ -111,6 +115,7 @@ class AuthController extends Controller
             'data' => [
                 'id' => $user->id,
                 "full_name" => $user->first_name . " " . $user->last_name,
+                "user_type" => $user->user_type,
                 "accessToken" => $token
             ],
             'message' => 'success',

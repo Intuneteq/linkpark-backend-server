@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\UserResource;
+use Illuminate\Support\Facades\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class UserController extends Controller
@@ -20,44 +21,19 @@ class UserController extends Controller
         ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreUserRequest $request)
+    public function show(User $user)
     {
-        return new JsonResponse([
-            'data' => 'posted'
-        ]);
+        return new UserResource($user);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(User $userId)
+    public function studentsByGuardianId(User $user, Request $request)
     {
-        return new UserResource($userId);
-        // return new JsonResponse([
-        //     "data" => $userId
-        // ]);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateUserRequest $request, User $user)
-    {
+        $user = new UserResource($user);
+        $students = $user->getStudents();
         return new JsonResponse([
-            'data' => 'updated'
-        ]);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(User $userId)
-    {
-        return new JsonResponse([
-            'data' => 'deleted'
+            'success' => true,
+            'data' => $students,
+            'message' => 'success'
         ]);
     }
 }

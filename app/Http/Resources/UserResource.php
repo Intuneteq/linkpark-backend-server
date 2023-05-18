@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Exceptions\CreateApiException;
 use App\Models\Guardian;
 use App\Models\School;
 use App\Models\Student;
@@ -42,9 +43,37 @@ class UserResource extends JsonResource
         return $school_name;
     }
 
-    private function getStudents()
+    public function getGuardianCode()
     {
-        return $this->students;
+        $user_type = $this->user_type;
+        if ($user_type === 'guardian') {
+
+            $guardian = $this->guardian;
+            return $guardian->guardian_code;
+        }
+    }
+
+    public function getStudents()
+    {
+        $user_type = $this->user_type;
+        if ($user_type !== 'guardian') throw new CreateApiException('Not a Guardian', 400);
+        $guardianCode = $this->getGuardianCode();
+
+        // Retrieve the guardian's students with their user information
+        $students = Student::where('guardian_code', $guardianCode)
+            ->with('user') // Include the associated user model
+            ->get();
+
+        // Extract the first and last names from the user model
+        $students = $students->map(function ($student) {
+            return [
+                'id' => $student->user->id,
+                'first_name' => $student->user->first_name,
+                'last_name' => $student->user->last_name,
+            ];
+        });
+
+        return $students;
     }
     /**
      * Transform the resource into an array.
@@ -61,11 +90,11 @@ class UserResource extends JsonResource
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at
         ];
-    
+
         if ($this->user_type === "guardian") {
             $response['students'] = $this->getStudents();
         }
-    
+
         return $response;
     }
 }

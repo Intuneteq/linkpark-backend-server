@@ -33,6 +33,7 @@ class AuthController extends Controller
             $user->first_name = $request->first_name;
             $user->last_name = $request->last_name;
             $user->email = $request->email;
+            $user->phone_number = $request->phone_number;
             $user->user_type = $request->user_type;
             $user->setBcryptPasswordAttribute($request->password); // hash the password
             $user->save();

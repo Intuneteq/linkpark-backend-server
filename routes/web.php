@@ -21,6 +21,6 @@ Route::get('/', function () {
 // It will only run in local env
 if (App::environment('local')) {
     Route::get('/playground', function () {
-        //
+        return 'playground';
     });
 }

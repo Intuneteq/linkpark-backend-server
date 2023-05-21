@@ -33,4 +33,14 @@ jobs:
         DB_CONNECTION: sqlite
         DB_DATABASE: database/database.sqlite
       run: vendor/bin/phpunit
+    - name: Autoloader optimization
+      run: composer install --optimize-autoloader --no-dev
+    - name: Caching configuration
+      run: php artisan config:cache
+    - name: Caching Events
+      run: php artisan event:cache
+    - name: Caching routes
+      run: php artisan route:cache
+    - name: Caching views
+      run: php artisan view:cache
       

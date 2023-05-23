@@ -33,5 +33,5 @@ jobs:
     - name: Generate key
       run: php artisan key:generate
     - name: Run migration
-      run: php artisan migration:refresh    
+      run: php artisan migrate:refresh    
       

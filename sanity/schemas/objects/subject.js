@@ -25,6 +25,11 @@ export default {
             name: 'grade',
             title: 'Grade',
             type: 'number'
+        },
+        {
+            name: 'teacher',
+            title: 'Teacher',
+            type: 'string'
         }
     ],
 }

@@ -6,28 +6,31 @@ use App\Models\Student;
 use App\Http\Requests\StoreStudentRequest;
 use App\Http\Requests\UpdateStudentRequest;
 use Illuminate\Http\JsonResponse;
-use Sanity\Client as SanityClient;
+use App\Services\SanityService;
 
 class StudentController extends Controller
 {
+    protected $sanityService;
+
+    public function __construct(SanityService $sanityService)
+    {
+        $this->sanityService = $sanityService;
+    }
+
     public function getAllSubjects()
     {
-        $client = new SanityClient([
-            'projectId' => env('SANITY_PROJECT_ID'),
-            'dataset' => env('SANITY_DATA_SET'),
-            'apiVersion' => env('SANITY_API_VERSION'),
-            'token' => env('SANITY_API_TOKEN')
-        ]);
-
+        // GROQ query for Student class subjects from sanity studio.
         $query = '*[_type == "jss1" && title == "JSS1A"]{subjects[]{
-            title, teacher,
+           "id": _key, title, teacher,
           "image": image.asset->url
         }}';
 
-        $result = $client->fetch($query);
+        $data = $this->sanityService->fetchData($query);
+
+
         return new JsonResponse([
             'success' => true,
-            'data' => $result[0],
+            'data' => $data[0],
             'message' => 'success'
         ]);
     }

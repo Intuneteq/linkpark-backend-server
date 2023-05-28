@@ -24,13 +24,13 @@ jobs:
       run: cp -rf /var/www/config/.env /var/www/server/_work/linkpark-backend-server/linkpark-backend-server/.env
     - name: Directory Permissions
       run: chmod -R 777 storage bootstrap/cache
+    - name: Install Dependencies
+      run: composer install --optimize-autoloader --no-dev
     - name: clear caches
       run: |
        php artisan cache:clear
        php artisan config:clear
        php artisan route:clear
-    - name: Install Dependencies
-      run: composer install --optimize-autoloader --no-dev
     - name: Caching configuration
       run: php artisan config:cache
     - name: Caching Events

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\CreateApiException;
 use App\Models\Student;
 use App\Http\Requests\StoreStudentRequest;
 use App\Http\Requests\UpdateStudentRequest;
@@ -25,7 +26,11 @@ class StudentController extends Controller
           "image": image.asset->url
         }}';
 
-        $data = $this->sanityService->fetchData($query);
+        try {
+            $data = $this->sanityService->fetchData($query);
+        } catch (\Throwable $th) {
+            throw new CreateApiException($th->getMessage(), 500);
+        }
 
 
         return new JsonResponse([

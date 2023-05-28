@@ -20,7 +20,6 @@ class SanityService
 
     public function fetchData(string $query)
     {
-        var_dump('SANITY_PROJECT_ID');
         return $this->client->fetch($query);
     }
 }

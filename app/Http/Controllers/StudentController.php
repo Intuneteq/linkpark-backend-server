@@ -30,7 +30,7 @@ class StudentController extends Controller
 
         return new JsonResponse([
             'success' => true,
-            'data' => $data[0],
+            'data' => $data[0]['subjects'],
             'message' => 'success'
         ]);
     }

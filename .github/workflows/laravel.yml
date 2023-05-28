@@ -23,7 +23,7 @@ jobs:
     - name: Directory Permissions
       run: chmod -R 777 storage bootstrap/cache
     - name: Copy .env if not exist
-      run: cp -rf /var/www/config/.env /var/www/server/_work/linkpark-backend-server/linkpark-backend-server/
+      run: cp -rf /var/www/config/.env /var/www/server/_work/linkpark-backend-server/linkpark-backend-server/.env
     - name: Install Dependencies
       run: composer install --optimize-autoloader --no-dev
     - name: Caching configuration

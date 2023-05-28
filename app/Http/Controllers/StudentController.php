@@ -5,46 +5,30 @@ namespace App\Http\Controllers;
 use App\Models\Student;
 use App\Http\Requests\StoreStudentRequest;
 use App\Http\Requests\UpdateStudentRequest;
+use Illuminate\Http\JsonResponse;
+use Sanity\Client as SanityClient;
 
 class StudentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function getAllSubjects()
     {
-        //
-    }
+        $client = new SanityClient([
+            'projectId' => env('SANITY_PROJECT_ID'),
+            'dataset' => env('SANITY_DATA_SET'),
+            'apiVersion' => env('SANITY_API_VERSION'),
+            'token' => env('SANITY_API_TOKEN')
+        ]);
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreStudentRequest $request)
-    {
-        //
-    }
+        $query = '*[_type == "jss1" && title == "JSS1A"]{subjects[]{
+            title, teacher,
+          "image": image.asset->url
+        }}';
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Student $student)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateStudentRequest $request, Student $student)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Student $student)
-    {
-        //
+        $result = $client->fetch($query);
+        return new JsonResponse([
+            'success' => true,
+            'data' => $result[0],
+            'message' => 'success'
+        ]);
     }
 }

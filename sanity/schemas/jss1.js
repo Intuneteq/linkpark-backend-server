@@ -11,7 +11,7 @@ export default {
         {
             name: 'id',
             title: 'ID',
-            type: 'string'
+            type: 'number'
         },
         {
             name: 'subjects',

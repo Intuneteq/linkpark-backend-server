@@ -12,6 +12,12 @@ export default {
             },
         },
         {
+            name: 'outline',
+            title: 'Subject Outline',
+            type: 'array',
+            of: [{type: 'outline'}],
+        },
+        {
             name: 'title',
             title: 'Title',
             type: 'string',
@@ -24,12 +30,12 @@ export default {
         {
             name: 'grade',
             title: 'Grade',
-            type: 'number'
+            type: 'number',
         },
         {
             name: 'teacher',
             title: 'Teacher',
-            type: 'string'
-        }
+            type: 'string',
+        },
     ],
 }

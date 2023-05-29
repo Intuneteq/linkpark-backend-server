@@ -16,7 +16,7 @@ Route::group([
     'namespace' => "\App\Http\Controllers"
 ], function () {
     Route::get('/user', [UserController::class, 'index'])->name('index');
-    Route::get('/user/{user}', [UserController::class, 'show'])->name('show')->middleware('is-Guardian');
-    Route::get('/user/guardian/{user}', [UserController::class, 'studentsByGuardianId'])->name('studentsByGuardianId')->middleware('is-Guardian');
+    Route::get('/user/{user}', [UserController::class, 'show'])->name('show')->middleware('isGuardian');
+    Route::get('/user/guardian/{user}', [UserController::class, 'studentsByGuardianId'])->name('studentsByGuardianId')->middleware('isGuardian');
 
 });

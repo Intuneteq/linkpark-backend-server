@@ -9,4 +9,5 @@ Route::group([
     'namespace' => '\App\Http\Controllers'
 ], function () {
     Route::get('/students/subjects', [StudentController::class, 'getAllSubjects'])->name('getAllSubjects');
+    Route::get('/students/subjects/{subjectId}', [StudentController::class, 'getSubjectById'])->name('getSubjectById');
 });

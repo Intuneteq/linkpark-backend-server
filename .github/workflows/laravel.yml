@@ -16,6 +16,9 @@ jobs:
         node-version: [18.x]
 
     steps:
+    - name: Check User
+      run: |
+        whoami
     - name: 🚚 Get latest code
       uses: actions/checkout@v3
 

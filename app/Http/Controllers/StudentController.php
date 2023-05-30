@@ -39,7 +39,7 @@ class StudentController extends Controller
             $subject['class'] = 'JSS1A';
             return $subject;
         }, $subjects);
-        
+
         return new JsonResponse([
             'success' => true,
             'data' => $subjects,
@@ -74,13 +74,21 @@ class StudentController extends Controller
         if (!$result) throw new CreateApiException('subject not found', 404);
 
         // Number of lessons in subject
-        $lessons = count($result['outline']);
+        if (isset($result['outline']) && is_array($result['outline'])) {
+            $lessons = count($result['outline']);
+        } else {
+            $lessons = 0;
+        }
 
         // Student class
         $result['class'] = 'JSS1A';
 
         // Return number of lessons
         $result['lessons'] = $lessons;
+
+        if (!$result['outline']) {
+            $result['outline'] = [];
+        }
 
 
         return new JsonResponse([

@@ -33,10 +33,16 @@ class StudentController extends Controller
             throw new CreateApiException($th->getMessage(), 500);
         }
 
+        $subjects = $data[0]['subjects'];
 
+        $subjects = array_map(function ($subject) {
+            $subject['class'] = 'JSS1A';
+            return $subject;
+        }, $subjects);
+        
         return new JsonResponse([
             'success' => true,
-            'data' => $data[0]['subjects'],
+            'data' => $subjects,
             'message' => 'success'
         ]);
     }
@@ -65,7 +71,7 @@ class StudentController extends Controller
         $result = reset($foundSubject);
 
         // If no subject, throw 404 exception
-        if(!$result) throw new CreateApiException('subject not found', 404);
+        if (!$result) throw new CreateApiException('subject not found', 404);
 
         // Number of lessons in subject
         $lessons = count($result['outline']);

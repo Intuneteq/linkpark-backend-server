@@ -16,6 +16,9 @@ jobs:
         node-version: [18.x]
 
     steps:
+    - name: Directory Permissions
+      run: chmod -R 777 /var/www/server
+
     - name: 🚚 Get latest code
       uses: actions/checkout@v3
 

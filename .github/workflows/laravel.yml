@@ -62,7 +62,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@master
+        uses: actions/checkout@v2
 
       - name: Setup PHP Environment
         uses: shivammathur/setup-php@v2
@@ -70,10 +70,10 @@ jobs:
           php-version: "8.1"
 
       - name: Install Composer Dependencies
-        run: composer install --no-dev
+        run: composer2 install --no-dev
 
       - name: Generate Autoload Files
-        run: composer dump-autoload
+        run: composer2 dump-autoload
 
       - name: Clear Route Cache
         run: php artisan route:clear

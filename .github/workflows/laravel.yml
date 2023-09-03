@@ -61,8 +61,8 @@ jobs:
     name: Build and Deploy
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
+      - name: Changed Repository
+        uses: actions/checkout@master
 
       - name: Setup PHP Environment
         uses: shivammathur/setup-php@v2

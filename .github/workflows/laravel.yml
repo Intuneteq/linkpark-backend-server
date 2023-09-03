@@ -63,25 +63,23 @@ jobs:
     steps:
       - name: Changed Repository
         uses: actions/checkout@master
-
-      - name: Setup PHP Environment
+      - name: Setup Enviroment
         uses: shivammathur/setup-php@v2
         with:
           php-version: "8.1"
+      - name: Install Packages
+        run: composer install --no-dev
 
-      - name: Install Composer Dependencies
-        run: composer2 install --no-dev
+      - name: autoload
+        run: composer dump-autoload
 
-      - name: Generate Autoload Files
-        run: composer2 dump-autoload
-
-      - name: Clear Route Cache
+      - name: Clear route
         run: php artisan route:clear
 
       - name: Clear Cache
         run: php artisan cache:clear
 
-      - name: Clear Configuration Cache
+      - name: Clear Config
         run: php artisan config:clear
 
       - name: Configure SSH

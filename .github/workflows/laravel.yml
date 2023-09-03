@@ -61,41 +61,48 @@ jobs:
     name: Build and Deploy
     runs-on: ubuntu-latest
     steps:
-      - name: Changed Repository
-        uses: actions/checkout@master
-      - name: Setup Enviroment
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Setup PHP Environment
         uses: shivammathur/setup-php@v2
         with:
           php-version: "8.1"
-      - name: Install Packages
+
+      - name: Install Composer Dependencies
         run: composer install --no-dev
 
-      - name: autoload
+      - name: Generate Autoload Files
         run: composer dump-autoload
 
-      - name: Clear route
+      - name: Clear Route Cache
         run: php artisan route:clear
 
       - name: Clear Cache
         run: php artisan cache:clear
 
-      - name: Clear Config
+      - name: Clear Configuration Cache
         run: php artisan config:clear
 
-      - name: Create SSH Directory
-        run: mkdir -p ~/.ssh
-
-      - name: Copy SSH Key to Runner
-        run: echo "$SSH_KEY" > ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa
+      - name: Configure SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          echo "$SSH_PASSPHRASE" > ~/.ssh/passphrase
+          chmod 600 ~/.ssh/passphrase
         env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_KEY }}
+          SSH_SECRET: ${{ secrets.SSH_KEY }}
+          SSH_PASSPHRASE: ${{ secrets.SSH_PASSPHRASE }}
 
-      - name: executing remote ssh commands to deploy
+      - name: Execute Remote SSH Commands to Deploy
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           port: "65002"
           key: ${{ secrets.SSH_KEY }}
-          script: "cd /home/u623889396/domains/tobiolanitori.com/public_html/linkparkapi && ./deploy.sh"
-
+          passphrase: ${{ secrets.SSH_PASSPHRASE }}
+          script: |
+            cd /home/u623889396/domains/tobiolanitori.com/public_html/linkparkapi
+            ./deploy.sh

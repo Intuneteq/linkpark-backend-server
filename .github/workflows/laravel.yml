@@ -82,6 +82,11 @@ jobs:
       - name: Clear Config
         run: php artisan config:clear
 
+      - name: Copy SSH Key to Runner
+        run: echo "$SSH_KEY" > ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_KEY }}
+
       - name: executing remote ssh commands to deploy
         uses: appleboy/ssh-action@master
         with:

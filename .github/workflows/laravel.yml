@@ -89,5 +89,6 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           port: "65002"
           key: ${{ secrets.SSH_KEY }}
+          passphrase: ${{ secrets.SSH_PASSPHRASE }}
           script: "cd /home/u623889396/domains/tobiolanitori.com/public_html/linkparkapi && ./deploy.sh"
 

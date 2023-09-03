@@ -87,8 +87,8 @@ jobs:
       - name: Configure SSH
         run: |
           mkdir -p ~/.ssh
-          echo "$SSH_KEY" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
+          echo "$SSH_KEY" > ~/.ssh/id_rsa/tobi
+          chmod 600 ~/.ssh/id_rsa/tobi
           echo "$SSH_PASSPHRASE" > ~/.ssh/passphrase
           chmod 600 ~/.ssh/passphrase
         env:

@@ -1,5 +1,5 @@
 <?php
-
+// i am new
 namespace App\Http\Controllers;
 
 use App\Events\Models\User\GuardianCode;
@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * @group Authorization and Authentication
- * 
+ *
  * Endpoints to Authorize and Authenticate a user
  **/
 class AuthController extends Controller

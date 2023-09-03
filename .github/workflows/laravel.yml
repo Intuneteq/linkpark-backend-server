@@ -1,50 +1,93 @@
+# name: Laravel
+
+# on:
+#   push:
+#     branches: [ "main" ]
+#   pull_request:
+#     branches: [ "main" ]
+
+# jobs:
+#   Linkpark-server-deploy:
+
+#     runs-on: self-hosted
+
+#     strategy:
+#       matrix:
+#         node-version: [18.x]
+
+#     steps:
+#     - name: Check User
+#       run: |
+#         whoami
+#     - name: 🚚 Get latest code
+#       uses: actions/checkout@v3
+
+#     - name: Install Dependencies
+#       run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+
+#     - name: Copy .env if not exist
+#       run: cp -rf /var/www/config/.env /var/www/server/_work/linkpark-backend-server/linkpark-backend-server/.env
+
+#     - name: Config Clearing
+#       run: php artisan config:clear
+
+#     - name: Cache Clearing
+#       run: php artisan cache:clear
+
+#     - name: Generate App Key
+#       run: php artisan key:generate
+
+#     - name: Generate storage link
+#       run: php artisan storage:link
+
+#     - name: Directory Permissions
+#       run: chmod -R 777 storage bootstrap/cache
+
+#     - name: Setup PHP with PECL extension
+#       uses: shivammathur/setup-php@15c43e89cdef867065b0213be354c2841860869e
+#       with:
+#         php-version: '8.2'
+
 name: Laravel
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
-  Linkpark-server-deploy:
-
-    runs-on: self-hosted
-
-    strategy:
-      matrix:
-        node-version: [18.x]
-
+  build:
+    name: Build and Deploy
+    runs-on: ubuntu-latest
     steps:
-    - name: Check User
-      run: |
-        whoami
-    - name: 🚚 Get latest code
-      uses: actions/checkout@v3
+      - name: Changed Repository
+        uses: actions/checkout@master
+      - name: Setup Enviroment
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.1"
+      - name: Install Packages
+        run: composer install --no-dev
 
-    - name: Install Dependencies
-      run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+      - name: autoload
+        run: composer dump-autoload
 
-    - name: Copy .env if not exist
-      run: cp -rf /var/www/config/.env /var/www/server/_work/linkpark-backend-server/linkpark-backend-server/.env
+      - name: Clear route
+        run: php artisan route:clear
 
-    - name: Config Clearing
-      run: php artisan config:clear
+      - name: Clear Cache
+        run: php artisan cache:clear
 
-    - name: Cache Clearing
-      run: php artisan cache:clear
-    
-    - name: Generate App Key
-      run: php artisan key:generate
+      - name: Clear Config
+        run: php artisan config:clear
 
-    - name: Generate storage link
-      run: php artisan storage:link
+      - name: executing remote ssh commands to deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          port: "65002"
+          key: ${{ secrets.SSH_KEY }}
+          script: "cd /home/u623889396/domains/tobiolanitori.com/public_html/linkparkapi && ./deploy.sh"
 
-    - name: Directory Permissions
-      run: chmod -R 777 storage bootstrap/cache
-
-    - name: Setup PHP with PECL extension
-      uses: shivammathur/setup-php@15c43e89cdef867065b0213be354c2841860869e
-      with:
-        php-version: '8.2'
-      

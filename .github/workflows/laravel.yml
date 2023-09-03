@@ -68,10 +68,10 @@ jobs:
         with:
           php-version: "8.1"
       - name: Install Packages
-        run: composer install --no-dev
+        run: composer2 install --no-dev
 
       - name: autoload
-        run: composer dump-autoload
+        run: composer2 dump-autoload
 
       - name: Clear route
         run: php artisan route:clear

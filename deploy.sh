@@ -8,9 +8,9 @@ echo "Deploying application"
   git pull origin main
 
 #exit maintainance mode
-composer install
+composer2 install
 
-composer dump-autoload
+composer2 dump-autoload
 php artisan optimize
 php artisan up
 php artisan migrate --force

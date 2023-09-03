@@ -102,5 +102,6 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
           script: |
+            cd /home/u623889396/domains/tobiolanitori.com/public_html/linkparkapi && chmod +x deploy.sh
             cd /home/u623889396/domains/tobiolanitori.com/public_html/linkparkapi
             ./deploy.sh
